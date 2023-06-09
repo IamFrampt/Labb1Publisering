@@ -1,0 +1,30 @@
+version: '3.4'
+
+networks:
+  dev:
+    driver: bridge
+
+services:
+  labb1publisering:
+    image: labb1publisering:dev
+    depends_on:
+      - dig_api
+    container_name: brocontainer_5
+    ports:
+      - "8081:80"  # Change the host port to 8081
+    build:
+      context: .
+      dockerfile: Labb1publisering/Dockerfile
+    networks:
+      - dev
+
+  dig_api:
+    image: digapi:dev
+    container_name: brocontainer_4
+    ports:
+      - "8080:80"
+    build:
+      context: .
+      dockerfile: DIG_API/Dockerfile
+    networks:
+      - dev

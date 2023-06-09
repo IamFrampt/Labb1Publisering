@@ -1,4 +1,4 @@
-using Labb1Publisering.Data;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -7,7 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+
+
+builder.Services.AddHttpClient();
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:32798") });
 
 var app = builder.Build();
 
@@ -19,7 +22,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 

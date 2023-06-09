@@ -5,13 +5,13 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["Labb1Publisering.csproj", "."]
-RUN dotnet restore "Labb1Publisering.csproj"
+COPY ["DIG_API.csproj", "."]
+RUN dotnet restore "DIG_API.csproj"
 COPY . .
 
 FROM build AS publish
-RUN dotnet publish "Labb1Publisering.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "DIG_API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Labb1Publisering.dll"]
+ENTRYPOINT ["dotnet", "DIG_API.dll"]

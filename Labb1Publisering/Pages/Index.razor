@@ -1,9 +1,61 @@
 ﻿@page "/"
+@using Newtonsoft.Json;
+@inject HttpClient client;
 
-<PageTitle>Index</PageTitle>
+<h1> Vart vill du se brott som har hänt? </h1>
 
-<h1>Hello, world!</h1>
+<EditForm Model="@NamnpaStad" OnValidSubmit="Handlethisshit">
 
-Welcome to your new app.
+    <label class="form-label">Stad</label>
+    <InputText class="form-control" @bind-Value=NamnpaStad.Namn></InputText>
+    <button class="btn btn-success my-3" type="submit">Se alla dagens brott</button>
+</EditForm>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+<H1>Här är alla brott i denna stad:</H1>
+@if (NameStad is not null || NameStad.Count > 0)
+{
+   @foreach(var stad in NameStad)
+    {
+        <h1>@stad.Name</h1>
+        <p>@stad.Summary</p>
+    }
+}
+
+@code{
+
+    public async void Handlethisshit()
+    {
+        var res = await client.GetAsync($"http://host.docker.internal:8080/Stad?name={NamnpaStad.Namn}");
+        //http://host.docker.internal:32776
+        var content = await res.Content.ReadAsStringAsync();
+        NameStad = JsonConvert.DeserializeObject<List<SearchedStad>>(content);
+    }
+
+    Stad NamnpaStad = new();
+
+
+    List<SearchedStad> NameStad = new();
+
+    public class Stad
+    {
+        public string Namn { get; set; }
+    }
+
+    public class SearchedStad
+    {
+        public int Id { get; set; }
+        public string Datetime { get; set; }
+        public string Name { get; set; }
+        public string Summary { get; set; }
+        public string Url { get; set; }
+        public string Type { get; set; }
+        public Location Location { get; set; }
+    }
+
+    public class Location
+    {
+        public string Name { get; set; }
+        public string Gps { get; set; }
+    }
+}
