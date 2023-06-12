@@ -13,7 +13,7 @@ services:
     ports:
       - "8081:80"  # Change the host port to 8081
     build:
-        context: ./labb1publisering
+        context: ./Labb1Publisering
         dockerfile: Dockerfile
     networks:
       - dev
