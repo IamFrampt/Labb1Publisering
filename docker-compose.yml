@@ -6,7 +6,7 @@ networks:
 
 services:
   labb1publisering:
-    image: frampt/labb1publisering:dev
+    image: docker.io/frampt/labb1publisering
     depends_on:
       - dig_api
     container_name: brocontainer_5
@@ -19,7 +19,7 @@ services:
       - dev
 
   dig_api:
-    image: frampt/digapi:dev
+    image: docker.io/frampt/frampt
     container_name: brocontainer_4
     ports:
       - "8080:80"
