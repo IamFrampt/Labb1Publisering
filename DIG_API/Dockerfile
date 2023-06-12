@@ -1,25 +1,21 @@
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+# Base image
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
- 
-
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+# Build image
+FROM base AS build
 WORKDIR /src
-COPY ["DIG_API/DIG_API.csproj", "DIG_API/"]
-RUN dotnet restore "DIG_API/DIG_API.csproj"
 COPY . .
-WORKDIR "/src/DIG_API"
-RUN dotnet build "DIG_API.csproj" -c Release -o /app/build
+RUN dotnet restore DIG_API.csproj
+RUN dotnet build DIG_API.csproj -c Release -o /app/build
 
- 
-
+# Publish image
 FROM build AS publish
-RUN dotnet publish "DIG_API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish DIG_API.csproj -c Release -o /app/publish
 
- 
-
+# Final image
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
