@@ -13,8 +13,8 @@ services:
     ports:
       - "8081:80"  # Change the host port to 8081
     build:
-      context: .
-      dockerfile: Labb1publisering/Dockerfile
+        context: ./labb1publisering
+        dockerfile: Dockerfile
     networks:
       - dev
 
@@ -24,7 +24,7 @@ services:
     ports:
       - "8080:80"
     build:
-      context: .
-      dockerfile: DIG_API/Dockerfile
+      context: ./DIG_API
+      dockerfile: Dockerfile
     networks:
       - dev
